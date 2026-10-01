@@ -348,7 +348,7 @@
     <section>
       <h2>The Methodology</h2>
       <p>Once I had my data I needed a way to simulate plastic elements. For this I used OpenDrift. OpenDrift is a python package for modeling the trajectories and fate of objects or substances drifting in the ocean. 
-        PlastDrift, which is a class within the OpenDirft was developed by the Norwegian Meteorological Institute. PlastDrift is a subclass of OpenDrift and aims to simulate plastic debris. I made a lot of assumptions and choices when using PlastDrift. Most of it was based on wanting to run the simulations on my personal computer within a reasonable time frame. 
+        PlastDrift, which is a class within OpenDirft was developed by the Norwegian Meteorological Institute. PlastDrift is a subclass of OpenDrift and aims to simulate plastic debris. I made a lot of assumptions and choices when using PlastDrift. Most of it was based on wanting to run the simulations on my personal computer within a reasonable time frame. 
         The most important assumptions to keep in mind are the following: 
         </p>
     </section>
@@ -360,7 +360,7 @@
     <li>We assume a constant rate of emission from each river throughout the simulation period.</li>
     <li>10 000 particles are split by each river's share of total emissions, each representing equal mass, so results show relative patterns rather than tonnes of plastic.</li>
     <li>Particles are released at the surface within 1.5 km of each river mouth, and any placed on land are moved to the nearest ocean cell.</li>
-    <li>All debris is modeled as one generic buoyant class (terminal velocity +0.01 m/s, 2% wind drift factor, OpenDrift defaults), with no distinction by size, density, shape or polymer.</li>
+    <li>All debris is modeled with the generic OpenDrift buoyant class (terminal velocity +0.01 m/s, 2% wind drift factor), with no distinction by size, density, shape or polymer.</li>
     <li>Although terminal velocity is included and vertical mixing is on, sinking makes no difference since the current file has a single layer.</li>
     <li>There is no explicit horizontal diffusion term, so unresolved turbulence is not represented and horizontal spread comes from the seeding radius alone.</li>
   </ol>
