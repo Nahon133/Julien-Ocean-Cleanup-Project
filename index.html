@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tracking River Plastic in the Mediterranean</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F2F6F4;
+    --ink: #16262B;
+    --ink-soft: #4A5D61;
+    --sea: #2E6E5E;
+    --clay: #C4763B;
+    --line: #D8E0DC;
+    --card: #FFFFFF;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0F1A1C; --ink: #EAF0EE; --ink-soft: #A9BBB8;
+      --sea: #6FBFA6; --clay: #E0A268; --line: #223234; --card: #16262A;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0F1A1C; --ink: #EAF0EE; --ink-soft: #A9BBB8;
+    --sea: #6FBFA6; --clay: #E0A268; --line: #223234; --card: #16262A;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: 'Work Sans', system-ui, -apple-system, sans-serif;
+    display: flex; min-height: 100%;
+  }
+  h1, h2, h3 { font-family: 'Fraunces', Georgia, serif; font-weight: 600; margin: 0 0 0.4em; }
+  p { line-height: 1.65; color: var(--ink-soft); max-width: 62ch; }
+  a { color: var(--sea); }
+
+  nav {
+    position: sticky; top: 0; align-self: flex-start;
+    width: 220px; flex-shrink: 0; height: 100vh;
+    padding: 2.5rem 1.5rem; border-right: 1px solid var(--line);
+  }
+  nav .eyebrow { font-size: 0.8rem; color: var(--ink-soft); margin-bottom: 2rem; }
+  nav button {
+    display: block; width: 100%; text-align: left; background: none; border: none;
+    font-family: 'Fraunces', serif; font-size: 1.15rem; color: var(--ink-soft);
+    padding: 0.6rem 0; cursor: pointer; border-bottom: 1px solid transparent;
+  }
+  nav button.active { color: var(--ink); border-bottom-color: var(--clay); }
+
+  main { flex: 1; padding: 3.5rem min(6vw, 4rem); max-width: 900px; }
+  .page { display: none; }
+  .page.active { display: block; }
+
+  .hero-label { color: var(--clay); font-size: 0.95rem; margin-bottom: 0.75rem; }
+  h1 { font-size: clamp(2rem, 4vw, 2.8rem); max-width: 16ch; }
+  .lede { font-size: 1.15rem; margin-top: 1rem; }
+
+  section { margin-top: 3rem; }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 6px;
+    padding: 1.5rem 1.75rem; margin-top: 1rem;
+  }
+  .stat-row { display: flex; gap: 2.5rem; flex-wrap: wrap; margin-top: 1.5rem; }
+  .stat b { display: block; font-family: 'Fraunces', serif; font-size: 1.6rem; color: var(--sea); }
+  .stat span { font-size: 0.9rem; color: var(--ink-soft); }
+
+  figure { margin: 1.5rem 0; }
+  figure .placeholder {
+    background: var(--card); border: 1px dashed var(--line); border-radius: 6px;
+    aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center;
+    color: var(--ink-soft); font-size: 0.9rem;
+  }
+  figcaption { font-size: 0.85rem; color: var(--ink-soft); margin-top: 0.5rem; }
+
+  @media (max-width: 720px) {
+    body { flex-direction: column; }
+    nav { position: static; width: 100%; height: auto; display: flex; align-items: center; gap: 1.5rem; padding: 1.25rem 1.5rem; }
+    nav .eyebrow { display: none; }
+    nav button { width: auto; padding: 0.3rem 0; }
+    main { padding: 2rem 1.5rem; }
+  }
+
+  .river-map {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  margin-top: 1.5rem;
+}
+.assumptions {
+  padding-left: 1.4rem;
+  max-width: 62ch;
+}
+.assumptions li {
+  line-height: 1.65;
+  color: var(--ink-soft);
+  margin-bottom: 0.75rem;
+}
+.assumptions li::marker {
+  color: var(--clay);
+  font-weight: 600;
+}
+.sim-video {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #000;
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="eyebrow">Mediterranean River Plastic</div>
+  <button class="nav-btn active" data-page="about">About</button>
+  <button class="nav-btn" data-page="project">The Project</button>
+</nav>
+
+<main>
+
+  <div class="page active" id="page-about">
+    <div class="hero-label">About</div>
+    <h1>Julien Nahon</h1>
+    <p class="lede">I first learnt about the ocean cleanup project in 2020 and I've been following it ever since. This small project looks to demonstrate my abilities. I hope this helps demonstrate that I could be an ideal candidate for your next internship position.</p>
+
+    <section>
+      <h2>Background</h2>
+      <p>I'm an applied mathematics graduate with environmental research experience (Environment Canada, Statistics Canada), followed by 2.5 years managing family business operations. I'm now returning to environmental/sustainability work with added operations and leadership experience. I'm currently applying to masters programs around Europe to continue my applied mathematics studies.</p>
+    </section>
+
+    <section>
+      <h2>Why this project</h2>
+      <p>For this project I decided to combine my coding abilities with my interest in modelling systems. I find it incredibly impreesive that I'm currently sitting in Ottawa and I have a pretty good idea of where waste accumulates in the Mediterranean wihtout ever getting on a boat! I chose the meditterranean because I have quite a bit of family in the south of France and it's always been one of my favourite bodies of water.</p>
+    </section>
+
+    <section>
+      <h2>Get in touch</h2>
+      <p>Email: julien@nahon.ca </p>
+    </section>
+  </div>
+
+  <div class="page" id="page-project">
+    <div class="hero-label">The Project</div>
+    <h1>Simulating River Plastic Transport in the Mediterranean</h1>
+    <p class="lede">In 2021, Meijer et al. (2021) studied the distribution of plastic waste from riverine sources across the world. With the results from this study and the open marine data offered by Copernicus Marine service, I was able to use the OpenDrift python library to simulate waste transport in the Meditterranean Sea</p>
+
+    <section>
+      <h2>The Data</h2>
+      <p>In this study I assume that wind and sea currents are the primary drivers of plastic transport. There are other variables, most notably the type of plastic emitted and wave action. But for ease of modelling I decided to ignore these variables. 
+        Therefore I needed wind and see currents dating back multiple years for the Meditterranean sea. Copernicus offers a wide variety of datasets. After looking through I ended up choosing two different datasets. The first one is the 'Mediterranean Sea Physics Analysis and Forecast' (ID: 'cmems_mod_med_phy-cur_anfc_4.2km_P1D-m') for my currents data. 
+        This data set had a resolution of 4.2 km, daily, with single near-surface layer of about 1 m. The second is 'Global Ocean Hourly Sea Surface Wind and Stress from Scatterometer and Model' (ID: 'cmems_obs-wind_glo_phy_nrt_l4_0.125deg_PT1H') for my wind data. This dataset is hourly with 10 m wind at 0.125° resolution. The other important dataset that was needed for this project was the one created in 2021 by Meijer et al. for their reserach on global reverine plastic emissions around the globe. 
+        From that research paper I was able to isolate 31 rivers that fed into the Meditteranean sea. Based on their emissions we can assume that these represent the vast majority of plastic emissions into the Meditterranean sea and we can regard other rivers as negligible. Information on these rivers can be seen below.
+        </p>
+    </section>
+    <section>
+  <h2>Top 31 Mediterranean Rivers by Plastic Emissions</h2>
+
+    <figure style="margin: 1rem 0 0;">
+      <img class="river-map" src="data/mediterranean_rivers_map.png" alt="Map of the top Mediterranean plastic-emitting rivers, sized and colored by emissions">
+      <figcaption>Source locations, sized and colored by emissions (Meijer et al., 2021).</figcaption>
+    </figure> 
+
+    <div class="card table-wrap">
+      <table style="width: 100%; border-collapse: collapse; font-size: 0.92rem;">
+          <thead>
+            <tr style="border-bottom: 2px solid var(--line);">
+              <th style="text-align: left; padding: 0.6rem 0.5rem;">Location</th>
+              <th style="text-align: left; padding: 0.6rem 0.5rem;">Country</th>
+              <th style="text-align: right; padding: 0.6rem 0.5rem;">Emissions (tonnes/year)</th>
+            </tr>
+          </thead>
+            <tr style="border-bottom: 1px solid var(--line);">
+          <td style="padding: 0.5rem;">Eastern Mediterranean / Aegean sea</td>
+          <td style="padding: 0.5rem;">Türkiye</td>
+          <td style="padding: 0.5rem; text-align: right;">1,529</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--line);">
+          <td style="padding: 0.5rem;">Eastern Mediterranean / Levantine sea</td>
+          <td style="padding: 0.5rem;">Egypt</td>
+          <td style="padding: 0.5rem; text-align: right;">1,144</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--line);">
+          <td style="padding: 0.5rem;">Eastern Mediterranean / Aegean sea</td>
+          <td style="padding: 0.5rem;">Türkiye</td>
+          <td style="padding: 0.5rem; text-align: right;">794</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--line);">
+          <td style="padding: 0.5rem;">Western Mediterranean / North Africa</td>
+          <td style="padding: 0.5rem;">Algeria</td>
+          <td style="padding: 0.5rem; text-align: right;">760</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--line);">
+          <td style="padding: 0.5rem;">Western Mediterranean / North Africa</td>
+          <td style="padding: 0.5rem;">Algeria</td>
+          <td style="padding: 0.5rem; text-align: right;">573</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--line);">
+          <td style="padding: 0.5rem;">Eastern Mediterranean / Aegean sea</td>
+          <td style="padding: 0.5rem;">Türkiye</td>
+          <td style="padding: 0.5rem; text-align: right;">528</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--line);">
+          <td style="padding: 0.5rem;">Eastern Mediterranean / Aegean sea</td>
+          <td style="padding: 0.5rem;">Türkiye</td>
+          <td style="padding: 0.5rem; text-align: right;">521</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--line);">
+          <td style="padding: 0.5rem;">Central Mediterranean / Adriatic sea</td>
+          <td style="padding: 0.5rem;">Albania</td>
+          <td style="padding: 0.5rem; text-align: right;">504</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--line);">
+          <td style="padding: 0.5rem;">Eastern Mediterranean / Levantine sea</td>
+          <td style="padding: 0.5rem;">Türkiye</td>
+          <td style="padding: 0.5rem; text-align: right;">479</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--line);">
+          <td style="padding: 0.5rem;">Eastern Mediterranean / Levantine sea</td>
+          <td style="padding: 0.5rem;">Egypt</td>
+          <td style="padding: 0.5rem; text-align: right;">438</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--line);">
+          <td style="padding: 0.5rem;">Western Mediterranean / North Africa</td>
+          <td style="padding: 0.5rem;">Algeria</td>
+          <td style="padding: 0.5rem; text-align: right;">415</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--line);">
+          <td style="padding: 0.5rem;">Eastern Mediterranean / Levantine sea</td>
+          <td style="padding: 0.5rem;">Egypt</td>
+          <td style="padding: 0.5rem; text-align: right;">368</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--line);">
+          <td style="padding: 0.5rem;">Western Mediterranean / North Africa</td>
+          <td style="padding: 0.5rem;">Algeria</td>
+          <td style="padding: 0.5rem; text-align: right;">367</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--line);">
+          <td style="padding: 0.5rem;">Central Mediterranean / Adriatic sea</td>
+          <td style="padding: 0.5rem;">Libya</td>
+          <td style="padding: 0.5rem; text-align: right;">338</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--line);">
+          <td style="padding: 0.5rem;">Eastern Mediterranean / Aegean sea</td>
+          <td style="padding: 0.5rem;">Türkiye</td>
+          <td style="padding: 0.5rem; text-align: right;">313</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--line);">
+          <td style="padding: 0.5rem;">Western Mediterranean / North Africa</td>
+          <td style="padding: 0.5rem;">Algeria</td>
+          <td style="padding: 0.5rem; text-align: right;">309</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--line);">
+          <td style="padding: 0.5rem;">Eastern Mediterranean / Aegean sea </td>
+          <td style="padding: 0.5rem;">Türkiye</td>
+          <td style="padding: 0.5rem; text-align: right;">301</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--line);">
+          <td style="padding: 0.5rem;">Western Mediterranean / North Africa</td>
+          <td style="padding: 0.5rem;">Algeria</td>
+          <td style="padding: 0.5rem; text-align: right;">281</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--line);">
+          <td style="padding: 0.5rem;">Western Mediterranean / North Africa</td>
+          <td style="padding: 0.5rem;">Algeria</td>
+          <td style="padding: 0.5rem; text-align: right;">279</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--line);">
+          <td style="padding: 0.5rem;">Eastern Mediterranean / Aegean sea</td>
+          <td style="padding: 0.5rem;">Türkiye</td>
+          <td style="padding: 0.5rem; text-align: right;">274</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--line);">
+          <td style="padding: 0.5rem;">Western Mediterranean / North Africa</td>
+          <td style="padding: 0.5rem;">Algeria</td>
+          <td style="padding: 0.5rem; text-align: right;">260</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--line);">
+          <td style="padding: 0.5rem;">Central Mediterranean / Adriatic sea</td>
+          <td style="padding: 0.5rem;">Albania</td>
+          <td style="padding: 0.5rem; text-align: right;">236</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--line);">
+          <td style="padding: 0.5rem;">Eastern Mediterranean / Levantine sea</td>
+          <td style="padding: 0.5rem;">Türkiye</td>
+          <td style="padding: 0.5rem; text-align: right;">234</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--line);">
+          <td style="padding: 0.5rem;">Western Mediterranean / North Africa</td>
+          <td style="padding: 0.5rem;">Algeria</td>
+          <td style="padding: 0.5rem; text-align: right;">216</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--line);">
+          <td style="padding: 0.5rem;">Central Mediterranean / Adriatic sea</td>
+          <td style="padding: 0.5rem;">Libya</td>
+          <td style="padding: 0.5rem; text-align: right;">209</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--line);">
+          <td style="padding: 0.5rem;">Western Mediterranean / North Africa</td>
+          <td style="padding: 0.5rem;">Algeria</td>
+          <td style="padding: 0.5rem; text-align: right;">204</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--line);">
+          <td style="padding: 0.5rem;">Western Mediterranean / North Africa</td>
+          <td style="padding: 0.5rem;">Algeria</td>
+          <td style="padding: 0.5rem; text-align: right;">197</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--line);">
+          <td style="padding: 0.5rem;">Central Mediterranean / Adriatic sea</td>
+          <td style="padding: 0.5rem;">Tunisia</td>
+          <td style="padding: 0.5rem; text-align: right;">196</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--line);">
+          <td style="padding: 0.5rem;">Eastern Mediterranean / Aegean sea</td>
+          <td style="padding: 0.5rem;">Türkiye</td>
+          <td style="padding: 0.5rem; text-align: right;">185</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--line);">
+          <td style="padding: 0.5rem;">Eastern Mediterranean / Aegean sea</td>
+          <td style="padding: 0.5rem;">Türkiye</td>
+          <td style="padding: 0.5rem; text-align: right;">184</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--line);">
+          <td style="padding: 0.5rem;">Eastern Mediterranean / Aegean sea</td>
+          <td style="padding: 0.5rem;">Türkiye</td>
+          <td style="padding: 0.5rem; text-align: right;">183</td>
+        </tr>
+          </tbody>
+        </table>
+  </div>
+</section>
+    <section>
+      <h2>The Methodology</h2>
+      <p>Once I had my data I needed a way to simulate plastic elements. For this I used OpenDrift. OpenDrift is a python package for modeling the trajectories and fate of objects or substances drifting in the ocean. 
+        PlastDrift, which is a class within the OpenDirft was developed by the Norwegian Meteorological Institute. PlastDrift is a subclass of OpenDrift and aims to simulate plastic debris. I made a lot of assumptions and choices when using PlastDrift. Most of it was based on wanting to run the simulations on my personal computer within a reasonable time frame. 
+        The most important assumptions to keep in mind are the following: 
+        </p>
+    </section>
+
+    <section>
+  <ol class="assumptions">
+    <li>Since no wave data was used. Stokes drift is estimated from wind using look-up tables at a fixed 25 km fetch. This is from the PlastDrift documentation.</li>
+    <li>A mixed-layer depth of 50m is assumed. The model's default value.</li>
+    <li>We assume a constant rate of emission from each river throughout the simulation period.</li>
+    <li>[N] particles are split by each river's share of total emissions, each representing equal mass, so results show relative patterns rather than tonnes of plastic.</li>
+    <li>Particles are released at the surface within [1.5 km] of each river mouth, and any placed on land are moved to the nearest ocean cell.</li>
+    <li>All debris is modeled as one generic buoyant class (terminal velocity +0.01 m/s, 2% wind drift factor, OpenDrift defaults), with no distinction by size, density, shape or polymer.</li>
+    <li>Although terminal velocity is included and vertical mixing is on, sinking makes no difference since the current file has a single layer.</li>
+    <li>There is no explicit horizontal diffusion term, so unresolved turbulence is not represented and horizontal spread comes from the seeding radius alone.</li>
+  </ol>
+</section>
+
+    <section>
+      <h2>The Modelling</h2>
+      <p>
+        With these assumptions I could now run my models. I first extracted the data from the Copernicus datasets and converted them into a format that OpenDrift could read. I then created a script that would seed the model for each of the 31 rivers. I assumed a total of 10000 particles. 
+        These 10000 particles were distributed proportionally across the 31 rivers based on their emissions. The seeding is done over time meaning we assume a continous flow from the rivers over the entire time frame. I then ran the simulation for a total of 12 months and a total of 24 months. These two simulations can be seen below
+      </p>
+    </section>
+    <h3>1 year Simulation</h3>
+    <figure>
+      <video class="sim-video" src="data/Continuous_flow_1_year.mp4" controls loop muted playsinline></video>
+      <figcaption>Particle positions over 1 year.</figcaption>
+    </figure>
+    <section>
+      </section>
+    <h3>2 year Simulation</h3>
+    <figure>
+      <video class="sim-video" src="data/Continuous_flow_2_years.mp4" controls loop muted playsinline></video>
+      <figcaption>Particle positions over 2 years.</figcaption>
+    </figure>
+    <h2>Results</h2>
+      <p>
+        In both simulations we see a concentration of debris in the western Mediterranean. Specifically the Balearic sea. We also see plastic debris accumulating on the Adriatic sea coastline, the Tunisian coastline, and the Libyan coastline.
+        Comparing this to observational data we see that the model is fairly accurate. We looked at two studies to compare our model to: Hatzonikolakis et al. (2022) and Soto-Navarro et al. (2021). Hatzonikolakis et al. (2022) reported high concentrations of macroplastics in Natura 2000 sites of the Adriatic Sea (Eastern Italy; ECR 5), at the Strait of Sicily (Italy) and in national MPAs of the Levantine Basin (Turkey, Egypt, Lebanon). 
+        Soto-Navarro et al. (2021) reported the highest concentrations of eastern Mediterranean, in the Adriatic Sea, the strait of Sicily and on the slopes of the Levantine Basin from Egypt to Turkey. 
+        \n
+        These reports are consistent with the results of our model. There are some slight differences. Our model predicted less concentration in the strait of Sicily and more concentration in the Balearic sea. This can be explained due to our assumptions which can be explained below.
+      </p>
+    <section>
+      <h2>Limitations</h2>
+      <p>There are a huge amounts of limitations that are directly correlated with our assumptions. </p>
+    </section>
+    <section>
+    <ol class="assumptions">
+      <li>No degradation, fragmentation, or sinking. Particles persist indefinitely as a single generic object. This is not seeded in reality</li>
+      <li>No size, density, shape, or polymer differentiation. Every particle shares the same terminal velocity and windage, so the model can't distinguish how different particles would behave differently.</li>
+      <li>No real wave data. Stokes drift is estimated from wind using a fixed-fetch look-up table rather than actual wave measurements,</li>
+      <li>No explicit horizontal turbulence term. The 'randomness' comes only from the seeding radius.</li>
+      <li>Limited current/wind resolution. We had a resolution of 4.2 km currents and 0.125° wind which can't resolve features smaller than that scale.</li>
+      <li>Constant, non-seasonal river emissions. Meijer et al. annual totals are applied as a steady release rate, missing seasonal variation</li>
+      <li>Although terminal velocity is included and vertical mixing is on, sinking makes no difference since the current file has a single layer.</li>
+      <li>Limited temporal window. One or two simulated years may not capture interannual variability in circulation.</li>
+    </ol>
+  </section>
+    <section>
+      <h2>Code</h2>
+      <p>Placeholder: link to your GitHub repository.</p>
+    </section>
+  </div>
+
+</main>
+
+<script>
+  const buttons = document.querySelectorAll('.nav-btn');
+  const pages = document.querySelectorAll('.page');
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('active'));
+      pages.forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('page-' + btn.dataset.page).classList.add('active');
+      window.scrollTo(0, 0);
+    });
+  });
+</script>
+
+</body>
+</html>
