@@ -134,7 +134,7 @@
   <div class="page active" id="page-about">
     <div class="hero-label">About</div>
     <h1>Julien Nahon</h1>
-    <p class="lede">I first learnt about the ocean cleanup project in 2020 and I've been following it ever since. This small project looks to demonstrate my abilities. I hope this helps demonstrate that I could be an ideal candidate for your next internship position.</p>
+    <p class="lede">I first learnt about the ocean cleanup project in 2020 and I've been following it ever since. This small project looks to demonstrate my abilities and motivation to work on this project. I hope this helps demonstrate that I could be an ideal candidate for your next internship position.</p>
 
     <section>
       <h2>Background</h2>
@@ -143,7 +143,8 @@
 
     <section>
       <h2>Why this project</h2>
-      <p>For this project I decided to combine my coding abilities with my interest in modelling systems. I find it incredibly impreesive that I'm currently sitting in Ottawa and I have a pretty good idea of where waste accumulates in the Mediterranean wihtout ever getting on a boat! I chose the meditterranean because I have quite a bit of family in the south of France and it's always been one of my favourite bodies of water.</p>
+      <p>For this project I decided to combine my coding abilities with my interest in modelling systems. 
+        I decided to study the meditterranean because I have quite a bit of family in the south of France and it's always been one of my favourite bodies of water.</p>
     </section>
 
     <section>
@@ -155,12 +156,15 @@
   <div class="page" id="page-project">
     <div class="hero-label">The Project</div>
     <h1>Simulating River Plastic Transport in the Mediterranean</h1>
-    <p class="lede">In 2021, Meijer et al. (2021) studied the distribution of plastic waste from riverine sources across the world. With the results from this study and the open marine data offered by Copernicus Marine service, I was able to use the OpenDrift python library to simulate waste transport in the Meditterranean Sea</p>
-
+    <p class="lede">In 2021, Meijer et al. (2021) studied the distribution of plastic waste from riverine sources across the world. With the results from that study and the open marine data offered by Copernicus Marine service, I was able to use the OpenDrift python library to simulate waste transport in the Meditterranean Sea</p>
+    <section>
+      <h2>AI Disclosure </h2>
+      <p>AI tools were used strictly to automate mundane configuration and deployment tasks. I completely understand and can write every line of code in this project from scratch. No core logic or major project decisions were handled by AI.</p>
+    </section>
     <section>
       <h2>The Data</h2>
       <p>In this study I assume that wind and sea currents are the primary drivers of plastic transport. There are other variables, most notably the type of plastic emitted and wave action. But for ease of modelling I decided to ignore these variables. 
-        Therefore I needed wind and see currents dating back multiple years for the Meditterranean sea. Copernicus offers a wide variety of datasets. After looking through I ended up choosing two different datasets. The first one is the 'Mediterranean Sea Physics Analysis and Forecast' (ID: 'cmems_mod_med_phy-cur_anfc_4.2km_P1D-m') for my currents data. 
+        <br><br>I needed wind and see currents dating back multiple years for the Meditterranean sea. Copernicus offers a wide variety of datasets. After looking through I ended up choosing two different datasets. The first one is the 'Mediterranean Sea Physics Analysis and Forecast' (ID: 'cmems_mod_med_phy-cur_anfc_4.2km_P1D-m') for my currents data. 
         This data set had a resolution of 4.2 km, daily, with single near-surface layer of about 1 m. The second is 'Global Ocean Hourly Sea Surface Wind and Stress from Scatterometer and Model' (ID: 'cmems_obs-wind_glo_phy_nrt_l4_0.125deg_PT1H') for my wind data. This dataset is hourly with 10 m wind at 0.125° resolution. The other important dataset that was needed for this project was the one created in 2021 by Meijer et al. for their reserach on global reverine plastic emissions around the globe. 
         From that research paper I was able to isolate 31 rivers that fed into the Meditteranean sea. Based on their emissions we can assume that these represent the vast majority of plastic emissions into the Meditterranean sea and we can regard other rivers as negligible. Information on these rivers can be seen below.
         </p>
@@ -169,7 +173,7 @@
   <h2>Top 31 Mediterranean Rivers by Plastic Emissions</h2>
 
     <figure style="margin: 1rem 0 0;">
-      <img class="river-map" src="data/mediterranean_rivers_map.png" alt="Map of the top Mediterranean plastic-emitting rivers, sized and colored by emissions">
+      <img class="river-map" src=".data/mediterranean_rivers_map.png" alt="Map of the top Mediterranean plastic-emitting rivers, sized and colored by emissions">
       <figcaption>Source locations, sized and colored by emissions (Meijer et al., 2021).</figcaption>
     </figure> 
 
@@ -354,8 +358,8 @@
     <li>Since no wave data was used. Stokes drift is estimated from wind using look-up tables at a fixed 25 km fetch. This is from the PlastDrift documentation.</li>
     <li>A mixed-layer depth of 50m is assumed. The model's default value.</li>
     <li>We assume a constant rate of emission from each river throughout the simulation period.</li>
-    <li>[N] particles are split by each river's share of total emissions, each representing equal mass, so results show relative patterns rather than tonnes of plastic.</li>
-    <li>Particles are released at the surface within [1.5 km] of each river mouth, and any placed on land are moved to the nearest ocean cell.</li>
+    <li>10 000 particles are split by each river's share of total emissions, each representing equal mass, so results show relative patterns rather than tonnes of plastic.</li>
+    <li>Particles are released at the surface within 1.5 km of each river mouth, and any placed on land are moved to the nearest ocean cell.</li>
     <li>All debris is modeled as one generic buoyant class (terminal velocity +0.01 m/s, 2% wind drift factor, OpenDrift defaults), with no distinction by size, density, shape or polymer.</li>
     <li>Although terminal velocity is included and vertical mixing is on, sinking makes no difference since the current file has a single layer.</li>
     <li>There is no explicit horizontal diffusion term, so unresolved turbulence is not represented and horizontal spread comes from the seeding radius alone.</li>
@@ -371,14 +375,14 @@
     </section>
     <h3>1 year Simulation</h3>
     <figure>
-      <video class="sim-video" src="data/Continuous_flow_1_year.mp4" controls loop muted playsinline></video>
+      <video class="sim-video" src=".data/Continuous_flow_1_year.mp4" controls loop muted playsinline></video>
       <figcaption>Particle positions over 1 year.</figcaption>
     </figure>
     <section>
       </section>
     <h3>2 year Simulation</h3>
     <figure>
-      <video class="sim-video" src="data/Continuous_flow_2_years.mp4" controls loop muted playsinline></video>
+      <video class="sim-video" src=".data/Continuous_flow_2_years.mp4" controls loop muted playsinline></video>
       <figcaption>Particle positions over 2 years.</figcaption>
     </figure>
     <h2>Results</h2>
@@ -386,8 +390,8 @@
         In both simulations we see a concentration of debris in the western Mediterranean. Specifically the Balearic sea. We also see plastic debris accumulating on the Adriatic sea coastline, the Tunisian coastline, and the Libyan coastline.
         Comparing this to observational data we see that the model is fairly accurate. We looked at two studies to compare our model to: Hatzonikolakis et al. (2022) and Soto-Navarro et al. (2021). Hatzonikolakis et al. (2022) reported high concentrations of macroplastics in Natura 2000 sites of the Adriatic Sea (Eastern Italy; ECR 5), at the Strait of Sicily (Italy) and in national MPAs of the Levantine Basin (Turkey, Egypt, Lebanon). 
         Soto-Navarro et al. (2021) reported the highest concentrations of eastern Mediterranean, in the Adriatic Sea, the strait of Sicily and on the slopes of the Levantine Basin from Egypt to Turkey. 
-        \n
-        These reports are consistent with the results of our model. There are some slight differences. Our model predicted less concentration in the strait of Sicily and more concentration in the Balearic sea. This can be explained due to our assumptions which can be explained below.
+        <br><br>
+        These reports are consistent with the results of our model. There are some slight differences. Our model predicted less concentration in the strait of Sicily and more concentration in the Balearic sea. This can be explained due to the limitations of our model which can be explained below.
       </p>
     <section>
       <h2>Limitations</h2>
@@ -397,17 +401,16 @@
     <ol class="assumptions">
       <li>No degradation, fragmentation, or sinking. Particles persist indefinitely as a single generic object. This is not seeded in reality</li>
       <li>No size, density, shape, or polymer differentiation. Every particle shares the same terminal velocity and windage, so the model can't distinguish how different particles would behave differently.</li>
-      <li>No real wave data. Stokes drift is estimated from wind using a fixed-fetch look-up table rather than actual wave measurements,</li>
+      <li>No real wave data. Stokes drift is estimated from wind using a fixed-fetch look-up table rather than actual wave measurements.</li>
       <li>No explicit horizontal turbulence term. The 'randomness' comes only from the seeding radius.</li>
       <li>Limited current/wind resolution. We had a resolution of 4.2 km currents and 0.125° wind which can't resolve features smaller than that scale.</li>
-      <li>Constant, non-seasonal river emissions. Meijer et al. annual totals are applied as a steady release rate, missing seasonal variation</li>
-      <li>Although terminal velocity is included and vertical mixing is on, sinking makes no difference since the current file has a single layer.</li>
+      <li>Constant, non-seasonal river emissions. Meijer et al. annual totals are applied as a steady release rate, missing seasonal variation.</li>
       <li>Limited temporal window. One or two simulated years may not capture interannual variability in circulation.</li>
     </ol>
   </section>
     <section>
       <h2>Code</h2>
-      <p>Placeholder: link to your GitHub repository.</p>
+      <p>https://github.com/Nahon133/Julien-Ocean-Cleanup-Project</p>
     </section>
   </div>
 
